@@ -1,3 +1,63 @@
-.container {
+body {
+    background-color: black;
+}
 
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.borda {
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* justify-content: center; */
+    background-color: #FFFFFF;
+    width: 40%;
+    border-radius: 20px;
+    /* border: 10vw; */
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+    font-size: 2rem;
+    padding: 2%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.add-tarefa {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 5%;
+}
+
+input {
+    width: 80%;
+    height: 2em;
+    border-radius: 5px;
+}
+
+button {
+    border-radius: 50px;
+    width: 3em;
+    height: 3em;
+    font-size: 0.8rem;
+    background-color:rgb(87, 107, 255);
+    color: #FFFFFF;
+    border-color: #FFFFFF;
+}
+
+button:hover {
+    background-color: rgb(53, 164, 255)
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    
 }
