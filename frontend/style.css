@@ -74,6 +74,16 @@ li {
     margin: 0.5rem;
 }
 
+li input[type="checkbox"]:checked + span{
+    text-decoration: line-through;
+    color: gray;
+}
+
+.checkbox {
+    width: 10%;
+    height: 2em;
+}
+
 span {
     cursor: pointer;
 }

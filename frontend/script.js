@@ -1,3 +1,4 @@
+const urlBase = "http://localhost:3000/tarefas";
 
 function criarTarefa(tarefaCriada) {
     //verifica se o input está vazio
@@ -6,14 +7,27 @@ function criarTarefa(tarefaCriada) {
     let tarefa = document.createElement("li");
     tarefa.dataset.id = tarefaCriada.id;
 
-    let texto = document.createTextNode(tarefaCriada.titulo);
+    //span para o titulo da tarefa
+    let textoTarefa = document.createElement("span");
+    textoTarefa.classList.add("texto-tarefa");
+    textoTarefa.textContent = tarefaCriada.titulo;
+    // checkbox para marcar a tarefa como concluida
+    let checkbox = document.createElement("input");
+    checkbox.classList.add("checkbox");
+    checkbox.type = "checkbox";
+    checkbox.checked = tarefaCriada.concluida === 1;
+
+    checkbox.addEventListener("change", ()=> marcarConcluidaTarefa(tarefa, checkbox));
+
+    // icone de deletar tarefa
     let iconeDeletarTarefa = document.createElement("span");
     iconeDeletarTarefa.textContent = "❌";
     iconeDeletarTarefa.classList.add("deletar-tarefa");
 
     iconeDeletarTarefa.addEventListener("click", ()=> deletarTarefa(tarefa));
-    
-    tarefa.appendChild(texto);
+
+    tarefa.appendChild(checkbox);
+    tarefa.appendChild(textoTarefa);
     tarefa.appendChild(iconeDeletarTarefa);
 
     document.querySelector("ul").appendChild(tarefa);
@@ -24,7 +38,7 @@ function criarTarefa(tarefaCriada) {
 async function adicionarTarefa() {
     let valorInput = document.querySelector("input").value;
 
-    const response = await fetch("http://localhost:3000/tarefas", {
+    const response = await fetch(urlBase, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -41,7 +55,7 @@ async function deletarTarefa(tarefa) {
     let id = tarefa.dataset.id;
 
     try {
-        let response = await fetch(`http://localhost:3000/tarefas/${id}`, {
+        let response = await fetch(`${urlBase}/${id}`, {
             method: "DELETE"
         });
 
@@ -51,6 +65,24 @@ async function deletarTarefa(tarefa) {
         else {
             console.error("Erro ao deletar no backend.");
         }
+    }
+    catch(error) {
+        console.error("Erro de conexão: ", error);
+    }
+}
+
+async function marcarConcluidaTarefa(tarefa, checkbox) {
+    let id = tarefa.dataset.id;
+
+    try {
+        let response = await fetch(`${urlBase}/${id}`, {
+            method: "PATCH",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ concluida: checkbox.checked })
+        });
+        
     }
     catch(error) {
         console.error("Erro de conexão: ", error);
