@@ -13,9 +13,12 @@ function criarTarefa(tarefaCriada) {
     textoTarefa.textContent = tarefaCriada.titulo;
     // checkbox para marcar a tarefa como concluida
     let checkbox = document.createElement("input");
-    checkbox.classList.add("checkbox");
     checkbox.type = "checkbox";
-    checkbox.checked = tarefaCriada.concluida === 1;
+    checkbox.classList.add("checkbox");
+   
+    if(tarefaCriada.concluida == true) {
+        checkbox.checked = true;
+    }
 
     checkbox.addEventListener("change", ()=> marcarConcluidaTarefa(tarefa, checkbox));
 
@@ -80,7 +83,7 @@ async function marcarConcluidaTarefa(tarefa, checkbox) {
             headers: {
             "Content-Type": "application/json"
             },
-            body: JSON.stringify({ concluida: checkbox.checked })
+            body: JSON.stringify({ concluida: checkbox.checked ? 1 : 0 })
         });
         
     }
@@ -88,3 +91,31 @@ async function marcarConcluidaTarefa(tarefa, checkbox) {
         console.error("Erro de conexão: ", error);
     }
 }
+
+async function listarTarefas() {
+    try {
+        const response = await fetch(urlBase, {
+            method: "GET",
+            headers: {
+            "Content-Type": "application/json"
+            },
+        });
+
+        if(!response.ok) {
+            console.error("Erro na requisição: ", response.status, await response.text());
+            return;
+        }
+        const tarefas = await response.json();
+
+
+        tarefas.forEach(tarefa => {
+            criarTarefa(tarefa);
+            console.log(tarefa)
+        });
+    }
+    catch(error) {
+        console.error("Erro ao listar tarefas");
+    }
+}
+
+listarTarefas();
